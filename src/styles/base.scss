@@ -1,0 +1,163 @@
+// 位移动效
+@mixin activeNudge($offset: false) {
+  &:active{
+    position: relative;
+    @if ($offset) {
+      left: $offset;
+      bottom: $offset;
+    } @else {
+      left: -2px;
+      bottom: -2px;
+    }
+  }
+}
+
+// 浅色效果
+@mixin activeLight($opacity: false) {
+  &:active {
+    @if($opacity) {
+      opacity: $opacity;
+    } @else {
+      opacity: 0.6;
+    }
+  }
+}
+
+// 浅色效果
+@mixin activeBackground($bg) {
+  &:active {
+    background: $bg;
+  }
+}
+
+/* 超出省略号 */
+@mixin fontEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* flex布局 */
+@mixin flexBox($row:true) {
+  display: flex;
+  @if($row){
+      flex-direction: row;
+  } @else {
+      flex-direction: column;
+  }
+  align-items: center;
+}
+
+/* 设置相框 */
+@mixin setPhotoFrame($url) {
+  img{
+    height: 100%;
+    width: 100%;
+    display: block;
+  }
+  .frame{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    @include setBg($url);
+  }
+}
+
+/* 设置alive小图标 */
+@mixin setAlive($url, $width, $height, $bottom:0, $left:false) {
+  position: relative;
+  .alive{
+    position: absolute;
+    height: $height;
+    width: $width;
+    @include setBg($url);
+    bottom: $bottom;
+    @if($left){
+      left: calc(50% - #{$width/2} + #{$left});
+    } @else{
+      left: calc(50% - #{$width/2});
+    }
+  }
+}
+
+/* 模态框 */
+@mixin modal($mask: false,$width: false,$minHeight:false,$maxHeight:false) {
+  .modal{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    transition: all .3s;
+    @if($mask){
+      background-color: #37373799;
+    }
+    .body{
+      z-index: 1000;
+      @if($width){
+          width: $width;
+      }
+      @if($minHeight){
+          min-height: $minHeight;
+      }
+      @if($maxHeight){
+          max-height: $maxHeight;
+      }
+      background: transparent;
+    }
+  }
+}
+
+/* 前置图标 */
+@mixin beforeIcon($width, $height,$url,$top:0,$margin:false){
+  &::before{
+    content: "";
+    display: inline-block;
+    width: $width; 
+    height: $height;
+    position: relative;
+    top: $top;
+    @if($margin){
+      margin: $margin;
+    }
+    background: url($url) no-repeat;
+    background-size: 100% 100%;
+  }
+}
+
+/* 后置图标 */
+@mixin afterIcon($width, $height, $url, $top:0,$margin:false){
+  &::after{
+    content: "";
+    display: inline-block;
+    width: $width; 
+    height: $height;
+    position: relative;
+    top: $top;
+    @if($margin){
+      margin: $margin;
+    }
+    background: url($url) no-repeat;
+    background-size: 100% 100%;
+  }
+}
+
+/* 擦除小程序原有button格式 */
+@mixin eraseButton() {
+  border: none;
+  border-radius: unset;
+  &::after{
+    border: none;
+    border-radius: unset;
+  }
+  &::before{
+    border: none;
+    border-radius: unset;
+  }
+}
