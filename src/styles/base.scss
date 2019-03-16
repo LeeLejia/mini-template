@@ -24,7 +24,7 @@
 }
 
 // 浅色效果
-@mixin activeBackground($bg) {
+@mixin activeBackground($bg: #ebebeb) {
   &:active {
     background: $bg;
   }
@@ -83,7 +83,7 @@
 }
 
 /* 模态框 */
-@mixin modal($mask: false,$width: false,$minHeight:false,$maxHeight:false) {
+@mixin modal($mask: false, $width: false, $minHeight:false, $maxHeight:false) {
   .modal{
     position: fixed;
     display: flex;
@@ -115,7 +115,7 @@
 }
 
 /* 前置图标 */
-@mixin beforeIcon($width, $height,$url,$top:0,$margin:false){
+@mixin beforeIcon($width, $height, $url, $top:0, $margin:false){
   &::before{
     content: "";
     display: inline-block;
@@ -132,7 +132,7 @@
 }
 
 /* 后置图标 */
-@mixin afterIcon($width, $height, $url, $top:0,$margin:false){
+@mixin afterIcon($width, $height, $url, $top:0, $margin:false){
   &::after{
     content: "";
     display: inline-block;
@@ -151,7 +151,10 @@
 /* 擦除小程序原有button格式 */
 @mixin eraseButton() {
   border: none;
+  text-align:unset;
   border-radius: unset;
+  color: inherit;
+  background-color: unset;
   &::after{
     border: none;
     border-radius: unset;
@@ -159,5 +162,30 @@
   &::before{
     border: none;
     border-radius: unset;
+  }
+}
+
+/* 空内容格式 */
+@mixin emptyContent() {
+  @include flexBox(true);
+  justify-content: center;
+  align-items: center;
+  font-size:28px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#b2b2b2;
+  line-height:40px;
+}
+
+@mixin setBg($url) {
+  background: url($url) no-repeat;
+  background-size: 100% 100%;
+}
+
+@mixin scrollList {
+  &::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    display:none;
   }
 }

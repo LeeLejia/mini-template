@@ -17,7 +17,7 @@
     "rootDir": ".",
     "jsx": "preserve",
     "jsxFactory": "Taro.createElement",
-    "allowJs": true,
+    "allowJs": false,
     "typeRoots": [
       "node_modules/@types",
       "global.d.ts"
@@ -25,13 +25,14 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@pages/*": ["./src/pages/*"],
-      "@fssCloud": ["./src/fssCloud"],
       "@api": ["./src/api"],
       "@config/*": ["./src/config/*"],
       "@assets/*": ["./src/assets/*"],
       "@img/*": ["./src/assets/img/*"],
-      "@utils/*": ["./src/utils/*"]
-    },
+      "@utils/*": ["./src/utils/*"],
+      "@src/*": ["./src/*"],
+      "fsscloud": ["./src/fssCloud"]
+    }
   },
   "compileOnSave": false
 }

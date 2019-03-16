@@ -1,5 +1,4 @@
-import leanCloud from 'leancloud-storage/dist/av-weapp.js'
-// import * as leanCloud from 'leancloud-storage'
+import leanCloud from './leancloud-storage-min'
 import { AccessControl } from './interface'
 
 // 获取权限控制
@@ -53,10 +52,14 @@ function getAcl(acl : AccessControl) : leanCloud.ACL {
 }
 
 // 保存对象,默认仅自己可读自己可写
-function saveObject(typeName: string, value: {[key: string]: any }, acl: AccessControl = {read: 'self', write: 'self'}): Promise<leanCloud.Object> {
+function saveObject(
+  typeName: string, 
+  value: {[key: string]: any }, 
+  acl: AccessControl = {read: 'self', write: 'self'}
+): Promise<leanCloud.Object> {
   var Obj = leanCloud.Object.extend(typeName)
   var instance = new Obj()
-  Object.keys(value).forEach(item=>{
+  Object.keys(value).forEach(item=> {
     instance.set(item, value[item])
   })
   if (acl) {
@@ -65,7 +68,13 @@ function saveObject(typeName: string, value: {[key: string]: any }, acl: AccessC
   return instance.save()
 }
 
+// 获取query对象
+function query(className: string): leanCloud.Query<leanCloud.Queriable>  {
+  return new leanCloud.Query(className)
+}
+
 export default {
   ...leanCloud,
-  saveObject
+  saveObject,
+  query
 }

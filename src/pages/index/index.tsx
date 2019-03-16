@@ -1,32 +1,77 @@
 import Taro, { Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import './index.scss'
+import { View, Image } from '@tarojs/components'
 import baseComponent from '@utils/baseComponent'
+import CircleButton from '@components/circle-button'
+import headerPic from '@img/illustrator.png'
+import iconMe from '@img/icon_me.png'
+import iconPlan from '@img/icon_plan.png'
+import './index.scss'
 
-const newComponent = baseComponent('index')
+const newComponent = baseComponent<{}, {
 
+}>('index')
 export default class extends newComponent {
 
   config: Config = {
-    navigationBarBackgroundColor: '#ffffff',
-    navigationBarTextStyle: 'black',
-    navigationBarTitleText: '主页'
+    navigationBarBackgroundColor: '#00c7d2',
+    navigationBarTextStyle: 'white',
+    navigationBarTitleText: APP_NAME
+  }
+  componentWillMount() {
+    this.$fc.getCurrentUser().then(user=> {
+      this.setState({
+        solution: user.get('solution')
+      })
+    })
   }
 
-  componentWillMount () { }
+  componentDidShow() {
+    const isLogin = this.$api.checkLoginStatus(false)
+    if (!isLogin) {
+      setTimeout(() => {
+        const isLogin = this.$api.checkLoginStatus()
+        if (!isLogin) {
+          return
+        }
+        this.$fc.getCurrentUser().then(user=> {
+          this.setState({
+            solution: user.get('solution')
+          })
+        })
+      }, 1000)
+    } else {
+      this.$fc.getCurrentUser().then(user=> {
+        this.setState({
+          solution: user.get('solution')
+        })
+      })
+    }
+  }
 
-  componentDidMount () { }
+  clickPlan() {
+    this.navigateTo('plan')
+  }
 
-  componentWillUnmount () { }
+  clickPerson() {
+    this.navigateTo('person')
+  }
 
-  componentDidShow () { }
+  onSolutionDetail() {
+    
+  }
 
-  componentDidHide () { }
-
-  render () {
+  render() {
+    const { } = this.state
     return (
-      <View className='index'>
-        <Text>Hello world! hello hello!!</Text>
+      <View className='index-container'>
+        <Image
+          className='pic-header'
+          src={headerPic}
+        />
+        <View className='menu'>
+          <CircleButton icon={iconPlan} background='#00c7d2' text='新方案' onClick={this.clickPlan}></CircleButton>
+          <CircleButton icon={iconMe} background='#00c7d2' text='个人中心' onClick={this.clickPerson}></CircleButton>
+        </View>
       </View>
     )
   }

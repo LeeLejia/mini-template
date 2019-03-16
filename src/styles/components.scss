@@ -1,2 +1,36 @@
 @import './base.scss';
 @import './icons.scss';
+
+// 含箭头列表项
+@mixin pointerRow($iconMarginLeft: 12px){
+  @include flexBox(true);
+  padding: 0 30px;
+  .content{
+    flex: 1;
+  }
+  .desc{
+    font-size:30px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:#b8b8ba;
+    line-height:42px;
+    @include afterIcon(16px, 26px, $pointerRight, 2px, auto auto auto $iconMarginLeft);
+  }
+}
+
+// 图片列表
+@mixin picListRow($space: false) {
+  margin-left: 30px;
+  @include flexBox(true);
+  @include scrollList();
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  @if($space) {
+    justify-content: unset;
+  } @else{
+    justify-content: space-between;
+  }
+  .item{
+    padding-right: $space;
+  }
+}

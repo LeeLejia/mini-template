@@ -1,0 +1,75 @@
+@import '@styles/index.scss';
+.person-container{
+  background: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 114px);
+  padding: 46px 0 68px 0;
+  .person-info{
+    margin: 0 50px;
+    @include flexBox(true);
+    align-items: center;
+    justify-content: flex-start;
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-right: 40px;
+    }
+    .name{
+      @include fontEllipsis;
+      width:294px;
+      height:50px;
+      font-size:36px;
+      font-family:PingFangSC-Semibold;
+      font-weight:600;
+      color: #000000;
+      line-height:50px;
+    }
+  }
+  .settings{
+    flex: 1;
+    margin-top: 82px;
+    color: #000000; 
+    .item{
+      @include flexBox(true);
+      align-items: center;
+      height: 100px;
+      margin-bottom: 4px;
+      padding: 0 50px;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      .title{
+        color:#000000;
+        flex: 1;
+        font-size:36px;
+        line-height:50px;
+        @include fontEllipsis;
+      }
+      .desc{
+        color: #b2b2b2;
+        flex: 1;
+        text-align: right;
+        @include fontEllipsis;
+        font-size:34px;
+        line-height:48px;
+        @include afterIcon(16px, 26px, '../../assets/img/pointer_right.png', 1px, auto auto auto 34px);
+      }
+      &:active{
+        background: #ebebeb;
+      }
+    }
+  }
+  .logout{
+    margin: 0 50px;
+    width: 200px;
+    height: 50px;
+    display: inline-block;
+    font-size:36px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color: #000000;
+    line-height:50px;
+    @include activeNudge;
+  }
+}

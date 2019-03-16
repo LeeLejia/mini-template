@@ -6,7 +6,6 @@ interface PageConfig {
 }
 
 interface ProjectConfig extends AppConfig{
-  isDebug: boolean,
   leancloud: LeanCloudConfig,
   pages: {
     [key: string]: PageConfig
@@ -14,18 +13,26 @@ interface ProjectConfig extends AppConfig{
 }
 
 const config: ProjectConfig = {
-  isDebug: true,
-  appName: 'xx',
+  isDebugger: true,
+  appName: '粉刷刷',
   asMainAccount: true,
-  loginByUnionId: true,
+  loginByUnionId: false,
   leancloud: {
-    appId: 'aaa',
-    appKey: 'aaa'
+    appId: 'fxJkXC9XzNWwcIvIu8w3YNKi-gzGzoHsz',
+    appKey: 'Ch0mWxhRlCE6zPhn5DSNGwVJ'
   },
   relationMiniProgram: {},
   pages: {
-    'index': {
-      path: 'pages/index/index',
+    index: {
+      path: '/pages/index/index',
+      bundle: {}
+    },
+    person: {
+      path: '/pages/person-page/index',
+      bundle: {}
+    },
+    login: {
+      path: '/pages/login-page/index',
       bundle: {}
     }
   }

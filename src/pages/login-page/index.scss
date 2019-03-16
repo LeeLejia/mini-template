@@ -1,0 +1,31 @@
+@import '../../styles/index.scss';
+.login-container{
+  height: 100vh;
+  @include flexBox(false);
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  .notice-text{
+    margin-top: 227px;
+    font-size:44px;
+    font-family:PingFangSC-Medium;
+    font-weight:500;
+    color:#222222;
+    line-height:62px;
+  }
+  .login-bt{
+    @include eraseButton();
+    font-size:38px;
+    font-family:PingFangSC-Medium;
+    font-weight:500;
+    color:#ffffff;
+    line-height:95px;
+    width:410px;
+    height:95px;
+    background:#00c7d2;
+    border-radius:48px;
+    margin-bottom: 88px;
+    text-align: center;
+    @include activeLight();
+  }
+}

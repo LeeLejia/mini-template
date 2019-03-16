@@ -261,6 +261,14 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/react@^16.7.3":
+  version "16.8.7"
+  resolved "https://r.cnpmjs.org/@types/react/download/@types/react-16.8.7.tgz#7b1c0223dd5494f9b4501ad2a69aa6acb350a29b"
+  integrity sha1-exwCI91UlPm0UBrSppqmrLNQops=
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
 "@types/webpack-env@^1.13.6":
   version "1.13.7"
   resolved "https://r.cnpmjs.org/@types/webpack-env/download/@types/webpack-env-1.13.7.tgz#137a4e57aa31ab57b1baf66f5dc3b6bf085e9944"
@@ -1431,6 +1439,11 @@ binary-extensions@^1.0.0:
   resolved "https://r.cnpmjs.org/binary-extensions/download/binary-extensions-1.13.0.tgz#9523e001306a32444b907423f1de2164222f6ab1"
   integrity sha1-lSPgATBqMkRLkHQj8d4hZCIvarE=
 
+bind-decorator@^1.0.11:
+  version "1.0.11"
+  resolved "https://r.cnpmjs.org/bind-decorator/download/bind-decorator-1.0.11.tgz#e41bc06a1f65dd9cec476c91c5daf3978488252f"
+  integrity sha1-5BvAah9l3ZzsR2yRxdrzl4SIJS8=
+
 block-stream@*:
   version "0.0.9"
   resolved "https://r.cnpmjs.org/block-stream/download/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
@@ -1814,7 +1827,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://r.cnpmjs.org/classnames/download/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha1-Q5Nb/90pHzJtrQogUwmzjQD2UM4=
@@ -2309,6 +2322,11 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://r.cnpmjs.org/date-now/download/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
   integrity sha1-6vQ5/U1ISK105cx9vvIAZyueNFs=
+
+dayjs@^1.7.7:
+  version "1.8.9"
+  resolved "https://r.cnpmjs.org/dayjs/download/dayjs-1.8.9.tgz#8b5fda2f995ff5f29705894e1d23240f7f674f61"
+  integrity sha1-i1/aL5lf9fKXBYlOHSMkD39nT2E=
 
 debug@*, debug@^4.1.0:
   version "4.1.1"
@@ -3266,6 +3284,11 @@ fsevents@^1.2.7:
   dependencies:
     nan "^2.9.2"
     node-pre-gyp "^0.10.0"
+
+fsscloud@^1.0.1:
+  version "1.0.1"
+  resolved "https://r.cnpmjs.org/fsscloud/download/fsscloud-1.0.1.tgz#e3cc748de91ea1e21375aec20768d7b5b4ce12ba"
+  integrity sha1-48x0jekeoeITda7CB2jXtbTOEro=
 
 fstream@^1.0.0, fstream@^1.0.2:
   version "1.0.11"
@@ -6978,6 +7001,18 @@ tar@^4:
     mkdirp "^0.5.0"
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
+
+taro-ui@^2.0.1:
+  version "2.0.2"
+  resolved "https://r.cnpmjs.org/taro-ui/download/taro-ui-2.0.2.tgz#178112e81066a77135d7b0da6d68137cff5ddb5c"
+  integrity sha1-F4ES6BBmp3E117DabWgTfP9d21w=
+  dependencies:
+    "@types/react" "^16.7.3"
+    bind-decorator "^1.0.11"
+    classnames "^2.2.6"
+    dayjs "^1.7.7"
+    lodash "^4.17.10"
+    prop-types "^15.6.2"
 
 terser-webpack-plugin@^1.1.0:
   version "1.2.2"

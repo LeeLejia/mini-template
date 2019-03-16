@@ -1,8 +1,11 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import Index from './pages/index'
-import fc from '@fssCloud'
+import fc from 'fsscloud'
+import api from '@api'
 import appConfig from '@config/index'
 import '@utils/prototype-mixin'
+import '@utils/ts-declare'
+import './interface'
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -21,7 +24,9 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/index/index'
+      'pages/index/index',
+      'pages/login-page/index',
+      'pages/person-page/index',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -33,11 +38,13 @@ class App extends Component {
 
   componentWillMount() {
     fc.init({...appConfig.leancloud, ...appConfig})
+    api.setUserInfo()
   }
 
-  componentDidMount () {}
+  
+  componentDidShow() {
 
-  componentDidShow () {}
+  }
 
   componentDidHide () {}
 

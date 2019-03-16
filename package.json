@@ -1,8 +1,8 @@
 {
-  "name": "fss-ts",
+  "name": "fss-qieyoujia",
   "version": "1.0.0",
   "private": true,
-  "description": "fss-ts",
+  "description": "粉刷刷",
   "scripts": {
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
@@ -33,9 +33,11 @@
     "babel-plugin-transform-es2015-for-of": "^6.23.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
+    "fsscloud": "^1.0.1",
     "leancloud-storage": "^3.11.1",
     "nerv-devtools": "^1.3.9",
-    "nervjs": "^1.3.9"
+    "nervjs": "^1.3.9",
+    "taro-ui": "^2.0.1"
   },
   "devDependencies": {
     "@tarojs/plugin-babel": "1.2.8",

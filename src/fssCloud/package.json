@@ -1,0 +1,15 @@
+{
+  "name": "fsscloud",
+  "version": "1.0.1",
+  "description": "leancloud+taro快速开发模块",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taro",
+    "leancloud"
+  ],
+  "author": "cjwddz",
+  "license": "ISC"
+}

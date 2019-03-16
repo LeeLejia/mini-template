@@ -9,7 +9,7 @@ function setCache(key: string, value: any): any {
 }
 
 // 读缓存
-function getCache(key: string, defValue: any, remain: boolean = false): any {
+function getCache(key: string, defValue?: any, remain: boolean = false): any {
   if (__cache[key] === false || __cache[key] === 0) {
     const value = __cache[key]
     if (!remain) {
@@ -25,13 +25,21 @@ function getCache(key: string, defValue: any, remain: boolean = false): any {
 }
 
 // 缓存异步数据
-function setStorageData(storageKey: string, syncEvn: Promise<any>, callback: (data: any) => void, showLoading: boolean = false): void {
+function setStorageData(
+  storageKey: string, 
+  syncEvn: Promise<any>, 
+  callback: (data: any) => void, 
+  showLoading: boolean = false): void {
   const key = `__storageKey_${storageKey}`
   if (showLoading) {
     Taro.showLoading({title: '加载中'})
   }
-  Taro.getStorage({key}).then((res)=>{callback(res.data)}).catch(err=>console.log(`读不到「${key}」缓存,${JSON.stringify(err)}`))
-  syncEvn.then(res =>{
+  Taro.getStorage({key}).then((res)=> {
+    callback && callback(res.data)}
+  ).catch(err => {
+    console.log(`读不到「${key}」缓存, ${JSON.stringify(err)}`)
+  })
+  syncEvn.then(res => {
     showLoading && Taro.hideLoading()
     Taro.setStorage({
       key,

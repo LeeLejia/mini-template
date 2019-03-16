@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro'
-import leanCloud from 'leancloud-storage/dist/av-weapp.js'
-// import * as leanCloud from 'leancloud-storage'
+import leanCloud from './leancloud-storage-min'
 import { AppConfig } from './interface'
 
 const STORAGE_USER_INFO = 'storage_user_info'
@@ -18,7 +17,7 @@ const state: {
 }
 
 // 初始化云
-function init(option: AppConfig) {
+function init(option: AppConfig): void {
   config = option
   // 用户授权状态
   state.authUserInfoPromise = new Promise((resolve) => {
@@ -42,12 +41,11 @@ function init(option: AppConfig) {
     })
   }
 }
-
-// 获取用户数据
+// 获取用户数据是 leancloud user
 async function getUserInfo(option: {
   forceUpdate?: boolean,
   overdue?: number
-}): Promise<Taro.getUserInfo.PromisedPropUserInfo | undefined | any> {
+}): Promise<leanCloud.User> {
   const params = Object.assign({ forceUpdate: false, overdue: (1000 * 3600 * 24 * 10) }, option)
   const lastTime = Taro.getStorageSync(STORAGE_USER_INFO_TIMESTAMP)
   // 不强制更新并且没过期则读缓存
@@ -74,11 +72,11 @@ async function getUserInfo(option: {
           })
           Taro.setStorage({
             key: STORAGE_USER_INFO,
-            data: info
+            data: user
           })
         }).catch(console.error)
         console.log('读取到用户数据:', info)
-        return info
+        return user
       })
     } else {
       throw Error('服务尚未初始化')
@@ -98,11 +96,14 @@ function loginWithWxUnionId(): Promise<leanCloud.User> {
       res: res[1],
     }
     return leanCloud.Cloud.run('wxLogin', paramsJson).then(function (data) {
+      if(!data.unionid) {
+        throw Error('获取unionId失败，请将小程序和主体公众号绑定')
+      }
       return leanCloud.User.loginWithAuthDataAndUnionId({
         uid: data.openid,
         access_token: data.token,
       }, config.appName, data.unionid, {
-          unionIdPlatform: 'weixin', // 指定为 weixin 即可通过 unionid 与其他 weixin 平台的帐号打通
+          unionIdPlatform: 'weixin',
           asMainAccount: config.asMainAccount,
         }).then(() => {
           return leanCloud.User.current()
@@ -111,7 +112,26 @@ function loginWithWxUnionId(): Promise<leanCloud.User> {
   })
 }
 
-export default {
-  init,
-  getUserInfo
+// 获取用户手机号码
+async function getPhoneNumber(encryptedData: string, iv: string): Promise<any> {
+  const user = leanCloud.User.current()
+  if (!user) throw Error('尚未登陆')
+  const session_key = user.get('authData').lc_weapp.session_key
+  return leanCloud.Cloud.run('wxGetPhone', {session_key, encryptedData, iv})
 }
+
+// 获取当前用户
+async function getCurrentUser(): Promise<leanCloud.User> {
+  return leanCloud.User.current() || state.userPromise && state.userPromise().then(() => {
+    return leanCloud.User.current()
+  })
+}
+
+const exportObj = {
+  init,
+  getUserInfo,
+  getCurrentUser,
+  getPhoneNumber
+}
+
+export default exportObj

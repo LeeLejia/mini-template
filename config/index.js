@@ -1,24 +1,45 @@
-const path =  require('path')
+const path = require('path')
+const sassImporter = function(url) {
+  const reg = /^@styles\/(.*)/
+  return {
+    file: reg.test(url) ? path.resolve(__dirname, '..', 'src/styles', url.match(reg)[1]) : url
+  }
+}
 const config = {
-  projectName: 'fss-ts',
+  projectName: '报价器',
+  defineConstants: {
+    APP_NAME: '报价器'
+  },
   date: '2019-2-16',
+  alias: {
+    '@components': path.resolve(__dirname, '..', 'src/components'),
+    '@pages': path.resolve(__dirname, '..', 'src/pages'),
+    '@config': path.resolve(__dirname, '..', 'src/config'),
+    'fsscloud': path.resolve(__dirname, '..', 'src/fssCloud'),
+    '@assets': path.resolve(__dirname, '..', 'src/assets'),
+    '@api': path.resolve(__dirname, '..', 'src/api'),
+    '@img': path.resolve(__dirname, '..', 'src/assets/img'),
+    '@utils': path.resolve(__dirname, '..', 'src/utils'),
+  },
   designWidth: 750,
   deviceRatio: {
     '640': 2.34 / 2,
     '750': 1,
     '828': 1.81 / 2
   },
-  alias: {
-    '@components': path.resolve(__dirname, '..', 'src/components'),
-    '@pages': path.resolve(__dirname, '..', 'src/pages'),
-    '@config': path.resolve(__dirname, '..', 'src/config'),
-    '@fssCloud': path.resolve(__dirname, '..', 'src/fssCloud'),
-    '@assets': path.resolve(__dirname, '..', 'src/assets'),
-    '@api': path.resolve(__dirname, '..', 'src/api'),
-    '@img': path.resolve(__dirname, '..', 'src/assets/img'),
-    '@utils': path.resolve(__dirname, '..', 'src/utils'),
-    // 'leancloud-storage': path.resolve(__dirname, '..', 'src/lib/leancloud-storage')
-  },
+  rules: [
+    {
+      test: /.scss$/i,
+      use: [
+        {
+          loader: 'sass-loader',
+          options: {}
+        },{
+          loader: 'resolve-url-loder',
+          options: {}
+        }
+      ]
+    }],
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: {
@@ -32,9 +53,10 @@ const config = {
         'transform-class-properties',
         'transform-object-rest-spread'
       ]
+    },
+    sass: {
+      importer: sassImporter
     }
-  },
-  defineConstants: {
   },
   copy: {
     patterns: [

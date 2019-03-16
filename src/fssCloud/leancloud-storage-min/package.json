@@ -1,0 +1,7 @@
+{
+  "description": "leancloud-storage SDK.",
+  "main": "./index.js",
+  "name": "leancloud-storage",
+  "types": "./storage.d.ts",
+  "typings": "./storage.d.ts"
+}
