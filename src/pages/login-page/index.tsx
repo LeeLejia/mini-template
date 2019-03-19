@@ -37,7 +37,7 @@ export default class extends newComponent{
     }
     if(detail.errMsg === 'getUserInfo:ok'){
       this.setState({loadding: true})
-      this.$api.setUserInfo(true).then(res => {
+      this.$api.setUserState().then(res => {
         this.setState({loadding: false})
         if (res.hasLogin) {
           Taro.showToast({

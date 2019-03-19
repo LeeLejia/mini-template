@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "fss-ts",
   "description": "fss-ts",
-  "appid": "",
+  "appid": "wx57b22c859889660f",
   "setting": {
     "urlCheck": true,
     "es6": false,

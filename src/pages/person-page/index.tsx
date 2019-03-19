@@ -26,7 +26,7 @@ export default class extends newComponent{
       person: {
         avatarUrl: user.avatarUrl,
         nickName: user.nickName,
-        curPlan: user.solution && user.solution.name || ''
+        curPlan: (user.solution && user.solution.name) || ''
       }
     })
   }

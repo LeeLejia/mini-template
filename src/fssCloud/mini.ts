@@ -2,19 +2,12 @@ import Taro from '@tarojs/taro'
 import leanCloud from './leancloud-storage-min'
 import { AppConfig } from './interface'
 
-const STORAGE_USER_INFO = 'storage_user_info'
-const STORAGE_USER_INFO_TIMESTAMP = 'storage_user_info_timestamp'
-
 let config: AppConfig
 const state: {
-  userPromise: (() => Promise<leanCloud.User>) | undefined,
-  authUserInfoPromise: Promise<void> | undefined,
-  authUserInfoResolve: (() => void) | undefined
-} = {
-  userPromise: undefined,
-  authUserInfoPromise: undefined,
-  authUserInfoResolve: undefined
-}
+  userPromise?: (() => Promise<leanCloud.User>),
+  authUserInfoPromise?: Promise<void>
+  authUserInfoResolve?: (() => void)
+} = {}
 
 // 初始化云
 function init(option: AppConfig): void {
@@ -33,59 +26,33 @@ function init(option: AppConfig): void {
       return state.authUserInfoPromise
     })
     return Promise.race([state.authUserInfoPromise, getSettingResult]).then(() => {
-      if (option.loginByUnionId) {
-        return loginWithWxUnionId()
-      } else {
-        return leanCloud.User.loginWithWeapp()
-      }
+      const curUser = option.loginByUnionId ? loginWithWxUnionId() : leanCloud.User.loginWithWeapp()
+      updateUserInfo(curUser)
+      return curUser
     })
   }
+  // 执行登陆
+  getCurrentUser()
 }
-// 获取用户数据是 leancloud user
-async function getUserInfo(option: {
-  forceUpdate?: boolean,
-  overdue?: number
-}): Promise<leanCloud.User> {
-  const params = Object.assign({ forceUpdate: false, overdue: (1000 * 3600 * 24 * 10) }, option)
-  const lastTime = Taro.getStorageSync(STORAGE_USER_INFO_TIMESTAMP)
-  // 不强制更新并且没过期则读缓存
-  if (!params.forceUpdate && new Date().getTime() - lastTime < params.overdue) {
-    const cache = await Taro.getStorage({ key: STORAGE_USER_INFO })
-    console.log('读到用户数据缓存:', cache)
-    if (cache) {
-      return Promise.resolve(cache.data)
-    }
-  }
-  // 获取用户信息
-  return Taro.getUserInfo().then(res => {
-    const info = res.userInfo
-    if (state.userPromise) {
-      return state.userPromise().then(user => {
-        Object.keys(info).forEach(key => {
-          user.set(key, info[key])
-        })
-        user.save().then(() => {
-          // 上传成功才设置缓存
-          Taro.setStorage({
-            key: STORAGE_USER_INFO_TIMESTAMP,
-            data: new Date().getTime()
-          })
-          Taro.setStorage({
-            key: STORAGE_USER_INFO,
-            data: user
-          })
-        }).catch(console.error)
-        console.log('读取到用户数据:', info)
-        return user
-      })
-    } else {
-      throw Error('服务尚未初始化')
-    }
 
-  }).catch(res => {
-    console.log('读取到用户数据失败:', res)
-    throw res
+// 更新用户信息
+async function updateUserInfo(user?: Promise<leanCloud.User>) {
+  const taroUser = await Taro.getUserInfo()
+  // 获取用户信息
+  const info = taroUser.userInfo
+  const lcUser = user?(await user):leanCloud.User.current()
+  const lcInfo = lcUser.attributes
+  let same = true
+  Object.keys(info).forEach(key => {
+    if(lcInfo[key]!==info[key]) {
+      same = false
+      lcUser.set(key, info[key])
+      console.log(`用户字段更新:${key}=${lcInfo[key]}[pre],${key}=${info[key]}[now]`)
+    }
   })
+  if(!same) {
+    lcUser.save()
+  }
 }
 
 // 使用微信unionId登陆
@@ -96,7 +63,7 @@ function loginWithWxUnionId(): Promise<leanCloud.User> {
       res: res[1],
     }
     return leanCloud.Cloud.run('wxLogin', paramsJson).then(function (data) {
-      if(!data.unionid) {
+      if (!data.unionid) {
         throw Error('获取unionId失败，请将小程序和主体公众号绑定')
       }
       return leanCloud.User.loginWithAuthDataAndUnionId({
@@ -117,10 +84,10 @@ async function getPhoneNumber(encryptedData: string, iv: string): Promise<any> {
   const user = leanCloud.User.current()
   if (!user) throw Error('尚未登陆')
   const session_key = user.get('authData').lc_weapp.session_key
-  return leanCloud.Cloud.run('wxGetPhone', {session_key, encryptedData, iv})
+  return leanCloud.Cloud.run('wxGetPhone', { session_key, encryptedData, iv })
 }
 
-// 获取当前用户
+// 获取当前用户,执行登陆 leancloud自带了缓存，所以leanCloud.User.current()几乎每次都能返回值
 async function getCurrentUser(): Promise<leanCloud.User> {
   return leanCloud.User.current() || state.userPromise && state.userPromise().then(() => {
     return leanCloud.User.current()
@@ -129,9 +96,9 @@ async function getCurrentUser(): Promise<leanCloud.User> {
 
 const exportObj = {
   init,
-  getUserInfo,
   getCurrentUser,
-  getPhoneNumber
+  getPhoneNumber,
+  updateUserInfo
 }
 
 export default exportObj

@@ -1,34 +1,27 @@
 import fc from 'fsscloud'
 import Taro from '@tarojs/taro'
 import appConfig from '@config/index'
+import request from './request'
 
 // 检查用户登陆状态
 function checkLoginStatus(nav: boolean = true, force: boolean = true): boolean {
-  const hasLogin = fc.state.get('person', 'hasLogin', false)
+  const hasLogin = fc.state.get('Person', 'hasLogin', false)
   if (!hasLogin && nav) {
     const url = `${appConfig.pages.login.path}?force=${force}`
     Taro.navigateTo({ url })
   }
-  return hasLogin
+  return !!hasLogin
 }
 
-// 设置用户信息
-async function setUserInfo(forceUpdate?: boolean): Promise<{ hasLogin: boolean, userInfo?: any }> {
-  return fc.getUserInfo({ forceUpdate }).then(res => {
-    fc.state.set('person', 'hasLogin', true)
-    if (res.className === '_User') {
-      const user = { ...res.attributes }
-      if (!user.realName) {
-        res.set('realName', user.nickName).save()
-      }
-      user.realName = user.realName || user.nickName
-      fc.state.set('person', 'userInfo', user)
-      return { hasLogin: true, userInfo: user }
-    }
-    fc.state.set('person', 'userInfo', res)
-    return { hasLogin: true, userInfo: res }
+// 设置用户状态
+type SetUserStateResult = { hasLogin: boolean, userInfo?: any }
+async function setUserState(): Promise<SetUserStateResult> {
+  return fc.getCurrentUser().then(res => {
+    fc.state.set('Person', 'hasLogin', true)
+    fc.state.set('Person', 'userInfo', res.attributes)
+    return { hasLogin: true, userInfo: res.attributes }
   }).catch(err => {
-    fc.state.set('person', 'hasLogin', false)
+    fc.state.set('Person', 'hasLogin', false)
     console.log('error::', err)
     return { hasLogin: false }
   })
@@ -48,14 +41,37 @@ function isSpecialModel(): Promise<boolean> {
 }
 
 // 获取用户信息
-function getUserInfo(): DataType.UserType {
-  return fc.state.get('person', 'userInfo', {})
+function getUserInfo(): DataType.UserInfo | undefined {
+  return fc.state.get('Person', 'userInfo')
+}
+
+// 检查更新
+function checkForUpdate() {
+  const updateManager = Taro.getUpdateManager()
+  updateManager.onCheckForUpdate((res) => {
+    console.log('hasUpdate:', res.hasUpdate)
+  })
+  updateManager.onUpdateReady(function () {
+    Taro.showModal({
+      title: '更新提示',
+      content: '新版本已经准备好，是否重启应用？'
+    }).then((res) => {
+      if (res.confirm) {
+        updateManager.applyUpdate()
+      }
+    })
+  })
+  updateManager.onUpdateFailed(function () {
+    // 新的版本下载失败
+  })
 }
 
 
 export default {
-  setUserInfo,
+  setUserState,
   checkLoginStatus,
   getUserInfo,
-  isSpecialModel
+  isSpecialModel,
+  checkForUpdate,
+  ...request
 }

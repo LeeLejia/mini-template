@@ -38,9 +38,9 @@ class App extends Component {
 
   componentWillMount() {
     fc.init({...appConfig.leancloud, ...appConfig})
-    api.setUserInfo()
+    api.setUserState()
+    api.checkForUpdate()
   }
-
   
   componentDidShow() {
 
