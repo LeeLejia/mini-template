@@ -16,7 +16,8 @@ export default class extends newComponent{
   config: Config = {
     navigationBarTitleText: '个人中心',
     navigationBarTextStyle: 'black',
-    navigationBarBackgroundColor: '#F8F8F8'
+    navigationBarBackgroundColor: '#F8F8F8',
+    disableScroll: true
   }
 
   componentWillMount() {

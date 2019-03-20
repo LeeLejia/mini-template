@@ -18,7 +18,8 @@ export default class extends newComponent{
   config: Config = {
     navigationBarBackgroundColor: '#ffffff',
     navigationBarTextStyle: 'black',
-    navigationBarTitleText: '粉刷刷'
+    navigationBarTitleText: '粉刷刷',
+    disableScroll: true
   }
 
   componentWillPreload(option){

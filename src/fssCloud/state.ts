@@ -1,6 +1,3 @@
-type MS = FssCloud.State
-type MN = keyof FssCloud.State
-type MV = MS[MN]
 
 let isDebugger: boolean = false
 
@@ -16,30 +13,30 @@ function showLog(group: string, info: Array<{ content: any, style?: string }>) {
   console.groupEnd()
 }
 
-type callbackType = (pre: undefined | MV[keyof MV], after: undefined | MV[keyof MV]) => void
+type callbackType<T> = (pre: undefined | T, after: undefined | T) => void
 interface StateModuleInterface {
-  addNotify: (key: keyof MV, callback: callbackType) => void
-  set: (key: keyof MV, value: MV[keyof MV] | undefined) => void
-  remove: (key: keyof MV) => void
-  get: (key: keyof MV) => any
+  addNotify: (key, callback) => void
+  set: (key, value) => void
+  remove: (key) => void
+  get: (key) => any
 }
 
 interface StateInterface {
-  addNotify: (module: MN, key: keyof MV, callback: callbackType) => void
-  set: (module: MN, key: keyof MV, value: MV[keyof MV]) => void
-  get: (module: MN, key: keyof MV) => MV[keyof MV] | undefined
-  remove: (module: MN, key: keyof MV) => void
-  getModule: (module: MN) => StateModuleInterface | undefined
+  addNotify: (module, key, callback) => void
+  set: (module, key, value) => void
+  get: (module, key) => any | undefined
+  remove: (module, key) => void
+  getModule: (module) => any | undefined
 }
 
-class StateModule implements StateModuleInterface {
-  private map = new Map<keyof MV, MV[keyof MV] | undefined>()
-  private notifiesMap = new Map<string, callbackType[]>()
-  private name: MN
-  constructor(name: MN) {
+class StateModule<M extends keyof FssCloud.State> implements StateModuleInterface {
+  private map = new Map()
+  private notifiesMap = new Map()
+  private name: M
+  constructor(name: M) {
     this.name = name
   }
-  get<K extends keyof MV>(key: K, defaultValue?: MV[K]): MV[K] | undefined {
+  get<K extends keyof FssCloud.State[M]>(key: K, defaultValue?: FssCloud.State[M][K]): FssCloud.State[M][K] | undefined {
     const value = this.map.get(key)
     if (isDebugger) {
       showLog(`[GET]->[${this.name}] module`, [
@@ -51,7 +48,7 @@ class StateModule implements StateModuleInterface {
     return value || defaultValue
   }
 
-  set<K extends keyof MV>(key: K, value: MV[K] | undefined): void {
+  set<K extends keyof FssCloud.State[M]>(key: K, value: FssCloud.State[M][K] | undefined): void {
     const old = this.map.get(key)
     this.map.set(key, value)
     const notifies = this.notifiesMap.get(key)
@@ -72,7 +69,7 @@ class StateModule implements StateModuleInterface {
     }
   }
 
-  addNotify<K extends keyof MV>(key: K, callback: callbackType): void {
+  addNotify<K extends keyof FssCloud.State[M]>(key: K, callback: callbackType<FssCloud.State[M][K]>): void {
     let notifies = this.notifiesMap.get(key)
     if (!notifies) {
       this.notifiesMap.set(key, [])
@@ -81,7 +78,7 @@ class StateModule implements StateModuleInterface {
     notifies && notifies.push(callback)
   }
 
-  remove<K extends keyof MV>(key: K): void {
+  remove<K extends keyof FssCloud.State[M]>(key: K): void {
     this.map.delete(key)
     this.notifiesMap.delete(key)
   }
@@ -93,9 +90,9 @@ export class State implements StateInterface {
     isDebugger = _isDebugger || false
   }
 
-  private map = new Map<MN, StateModule>()
+  private map = new Map()
 
-  addNotify<K extends keyof MV>(module: MN, key: K, callback: callbackType): void {
+  addNotify<M extends keyof FssCloud.State, K extends keyof FssCloud.State[M]>(module: M, key: K, callback: callbackType<FssCloud.State[M][K]>): void {
     let moduleEntity = this.map.get(module)
     if (!moduleEntity) {
       this.map.set(module, new StateModule(module))
@@ -104,7 +101,7 @@ export class State implements StateInterface {
     moduleEntity && moduleEntity.addNotify(key, callback)
   }
 
-  set<K extends keyof MV>(module: MN, key: K, value: MV[K]): void {
+  set<M extends keyof FssCloud.State, K extends keyof FssCloud.State[M]>(module: M, key: K, value: FssCloud.State[M][K]): void {
     let moduleEntity = this.map.get(module)
     if (!moduleEntity) {
       this.map.set(module, new StateModule(module))
@@ -113,7 +110,7 @@ export class State implements StateInterface {
     moduleEntity && moduleEntity.set(key, value)
   }
 
-  get<K extends keyof MV>(module: MN, key: K, defaultValue?: MV[K]): MV[K] | undefined {
+  get<M extends keyof FssCloud.State, K extends keyof FssCloud.State[M]>(module: M, key: K, defaultValue?: FssCloud.State[M][K]): FssCloud.State[M][K] | undefined {
     let moduleEntity = this.map.get(module)
     if (!moduleEntity) {
       this.map.set(module, new StateModule(module))
@@ -122,7 +119,7 @@ export class State implements StateInterface {
     return moduleEntity && moduleEntity.get(key, defaultValue) || defaultValue
   }
 
-  getModule(module: MN): StateModule | undefined {
+  getModule<M extends keyof FssCloud.State>(module: M): StateModule<M> | undefined {
     let moduleEntity = this.map.get(module)
     if (!moduleEntity) {
       this.map.set(module, new StateModule(module))
@@ -131,7 +128,7 @@ export class State implements StateInterface {
     return moduleEntity
   }
 
-  remove<K extends keyof MV>(module: MN, key: K): void {
+  remove<M extends keyof FssCloud.State>(module: M, key: keyof FssCloud.State[M]): void {
     const moduleEntity = this.map.get(module)
     if (moduleEntity) {
       moduleEntity.remove(key)

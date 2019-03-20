@@ -14,7 +14,8 @@ export default class extends newComponent {
   config: Config = {
     navigationBarBackgroundColor: '#00c7d2',
     navigationBarTextStyle: 'white',
-    navigationBarTitleText: APP_NAME
+    navigationBarTitleText: APP_NAME,
+    disableScroll: true
   }
   componentWillMount() {  
   }

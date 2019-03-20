@@ -10,6 +10,9 @@ declare namespace FssCloud {
     Person: {
       hasLogin: boolean,
       userInfo: DataType.UserInfo
+    },
+    Car: {
+      factor: string
     }
   }
 }
