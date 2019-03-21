@@ -15,4 +15,16 @@ declare namespace FssCloud {
       factor: string
     }
   }
+
+  namespace AbTest {
+    // string、number、boolean
+    export type Var = {
+      version: string,
+      pic: string,
+      aaa: number
+    }
+    export type Index = {
+      version_a_click_count: number
+    }
+  }
 }

@@ -26,8 +26,17 @@ interface LeanCloudConfig {
   disableCurrentUser?: boolean;
 }
 
+/* testinAB 配置 */
+interface TestinABConfig {
+  appKey: string,
+  clientId?: string,
+  option?: { crossMultiLink?: boolean, openOverlay?: boolean, timeout?: number, url?: string }
+}
+
 /* 初始化参数 */
-interface InitOption extends AppConfig, LeanCloudConfig {}
+interface InitOption extends AppConfig, LeanCloudConfig { 
+  testAb: TestinABConfig
+}
 
 /* 权限控制参数 */
 type AccessType = 'none' | 'self' | 'public' | Array<string> | leanCloud.User | Array<leanCloud.User> | leanCloud.Role | Array<leanCloud.Role>
@@ -40,5 +49,6 @@ export {
   AppConfig,
   LeanCloudConfig,
   InitOption,
+  TestinABConfig,
   AccessControl
 }

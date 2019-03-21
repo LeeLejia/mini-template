@@ -1,4 +1,4 @@
-import {AppConfig, LeanCloudConfig } from '../fssCloud/interface'
+import {AppConfig, LeanCloudConfig, TestinABConfig  } from '../fssCloud/interface'
 
 interface PageConfig {
   path: string,
@@ -7,6 +7,7 @@ interface PageConfig {
 
 interface ProjectConfig extends AppConfig{
   leancloud: LeanCloudConfig,
+  testAb: TestinABConfig
   pages: {
     [key: string]: PageConfig
   }
@@ -20,6 +21,9 @@ const config: ProjectConfig = {
   leancloud: {
     appId: 'fxJkXC9XzNWwcIvIu8w3YNKi-gzGzoHsz',
     appKey: 'Ch0mWxhRlCE6zPhn5DSNGwVJ'
+  },
+  testAb: {
+    appKey: ''
   },
   relationMiniProgram: {},
   pages: {
