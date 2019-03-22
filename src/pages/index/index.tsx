@@ -17,14 +17,24 @@ export default class extends newComponent {
     navigationBarTitleText: APP_NAME,
     disableScroll: true
   }
-  componentWillMount() {  
+  componentWillMount() {
   }
 
   componentDidShow() {
   }
 
   onPay() {
-    console.log(123)
+    var paramsJson = {
+      productDescription: 'test mini',
+      amount: 1,
+    }
+    this.$fc.Cloud.run('wxOrder', paramsJson).then(data=>{
+      console.log('预请求订单成功')
+      Taro.requestPayment(data).then(res=>{
+        console.log('支付完成')
+        console.log('pay result:', res)
+      })
+    })
   }
 
   render() {

@@ -9,7 +9,7 @@ let state: State = new State()
 function init(option: InitOption) {
   leanCloud.init(option)
   miniApp.init(option)
-  abTest.init(option.testAb.appKey, option.testAb.clientId, option.testAb.option)
+  option.testAb && abTest.init(option.testAb.appKey, option.testAb.clientId, option.testAb.option)
   state.setDebugger(option.isDebugger)
 }
 

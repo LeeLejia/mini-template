@@ -7,7 +7,7 @@ interface PageConfig {
 
 interface ProjectConfig extends AppConfig{
   leancloud: LeanCloudConfig,
-  testAb: TestinABConfig
+  testAb?: TestinABConfig
   pages: {
     [key: string]: PageConfig
   }
@@ -15,15 +15,15 @@ interface ProjectConfig extends AppConfig{
 
 const config: ProjectConfig = {
   isDebugger: true,
-  appName: '粉刷刷',
+  appName: APP_NAME,
   asMainAccount: true,
   loginByUnionId: false,
   leancloud: {
-    appId: 'fxJkXC9XzNWwcIvIu8w3YNKi-gzGzoHsz',
-    appKey: 'Ch0mWxhRlCE6zPhn5DSNGwVJ'
+    appId: 'Oc72IpiQ9BPnocwOCQSjj10Y-gzGzoHsz',
+    appKey: 'lTzR0fHpeb5sRtpKgKpcXYbG'
   },
   testAb: {
-    appKey: ''
+    appKey: 'TESTIN_wadc901fa-c75f-457a-ad20-b8e0f2ac8883'
   },
   relationMiniProgram: {},
   pages: {

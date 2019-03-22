@@ -6,9 +6,9 @@ const sassImporter = function(url) {
   }
 }
 const config = {
-  projectName: '报价器',
+  projectName: '模版',
   defineConstants: {
-    APP_NAME: '报价器'
+    APP_NAME: '模版'
   },
   date: '2019-2-16',
   alias: {
