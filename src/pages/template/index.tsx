@@ -12,7 +12,7 @@ export default class extends newComponent{
   config: Config = {
     navigationBarBackgroundColor: '#00c7d2',
     navigationBarTextStyle: 'white',
-    navigationBarTitleText: '粉刷刷',
+    navigationBarTitleText: APP_NAME,
     disableScroll: true
   }
 

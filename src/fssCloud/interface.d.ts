@@ -35,7 +35,7 @@ interface TestinABConfig {
 
 /* 初始化参数 */
 interface InitOption extends AppConfig, LeanCloudConfig { 
-  testAb: TestinABConfig
+  testAb?: TestinABConfig
 }
 
 /* 权限控制参数 */

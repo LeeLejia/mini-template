@@ -1,4 +1,4 @@
-import Taro, {Config} from '@tarojs/taro'
+import Taro, { Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import baseComponent from '@utils/baseComponent'
 import './index.scss'
@@ -7,10 +7,11 @@ const newComponent = baseComponent<{}, {
   loadding: boolean
 }>()
 
-let force:boolean = true
+let force: boolean = true
+let loginSuccess: boolean = false
 
-export default class extends newComponent{
-  
+export default class extends newComponent {
+
   state = {
     loadding: false
   }
@@ -22,24 +23,25 @@ export default class extends newComponent{
     disableScroll: true
   }
 
-  componentWillPreload(option){
+  componentWillPreload(option) {
     force = (option.force === 'true')
   }
 
-  componentWillUnmount () { 
-    if (force) {
-      this.$api.checkLoginStatus(true)
+  componentWillUnmount() {
+    if (!loginSuccess && force) {
+      // 没登录成功
+      Taro.navigateBack({ delta: 1 })
     }
   }
 
-  onGetUserInfo({detail}) {
+  onGetUserInfo({ detail }) {
     if (this.state.loadding) {
       return
     }
-    if(detail.errMsg === 'getUserInfo:ok'){
-      this.setState({loadding: true})
+    if (detail.errMsg === 'getUserInfo:ok') {
+      this.setState({ loadding: true })
       this.$api.setUserState().then(res => {
-        this.setState({loadding: false})
+        this.setState({ loadding: false })
         if (res.hasLogin) {
           Taro.showToast({
             title: '登陆成功',
@@ -47,8 +49,8 @@ export default class extends newComponent{
             duration: 1500
           })
           setTimeout(() => {
-            force = false
-            Taro.navigateBack({delta: 1})
+            loginSuccess = false
+            Taro.navigateBack({ delta: 1 })
           }, 1500)
         } else {
           Taro.showToast({
@@ -64,21 +66,21 @@ export default class extends newComponent{
       })
       // 跳回首页
       setTimeout(() => {
-        force = false
-        Taro.navigateBack({delta: 100})
+        loginSuccess = false
+        Taro.navigateBack({ delta: 100 })
       }, 2000)
     }
   }
 
-  render () {
+  render() {
     const { loadding } = this.state
     return (
       <View className='login-container'>
         <View className='notice-text'>登陆后才可以进行操作哦</View>
-        <Button 
-          className='login-bt' 
-          loading={loadding} 
-          openType='getUserInfo' 
+        <Button
+          className='login-bt'
+          loading={loadding}
+          openType='getUserInfo'
           onGetUserInfo={this.onGetUserInfo.bind(this)}>使用微信登录</Button>
       </View>
     )
