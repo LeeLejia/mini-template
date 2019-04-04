@@ -1,10 +1,6 @@
 import Taro, { Config } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import baseComponent from '@utils/baseComponent'
-import CircleButton from '@components/circle-button'
-import headerPic from '@img/illustrator.png'
-import iconMe from '@img/icon_me.png'
-import iconPlan from '@img/icon_plan.png'
 import './index.scss'
 
 const newComponent = baseComponent<{}, {
@@ -18,6 +14,10 @@ export default class extends newComponent {
     disableScroll: true
   }
   componentWillMount() {
+  }
+
+  componentLoadOption(data: any) {
+
   }
 
   componentDidShow() {

@@ -13,6 +13,22 @@ interface ProjectConfig extends AppConfig{
   }
 }
 
+// 页面配置
+const pageConfig = {
+  index: {
+    path: '/pages/index/index',
+    bundle: {}
+  },
+  person: {
+    path: '/pages/person-page/index',
+    bundle: {}
+  },
+  login: {
+    path: '/pages/login-page/index',
+    bundle: {}
+  }
+}
+
 const config: ProjectConfig = {
   isDebugger: IS_DEBUG,
   appName: APP_NAME,
@@ -26,20 +42,9 @@ const config: ProjectConfig = {
     appKey: 'TESTIN_wadc901fa-c75f-457a-ad20-b8e0f2ac8883'
   },
   relationMiniProgram: {},
-  pages: {
-    index: {
-      path: '/pages/index/index',
-      bundle: {}
-    },
-    person: {
-      path: '/pages/person-page/index',
-      bundle: {}
-    },
-    login: {
-      path: '/pages/login-page/index',
-      bundle: {}
-    }
-  }
+  pages: pageConfig
 }
+
+export type PagesKey = keyof typeof pageConfig
 
 export default config

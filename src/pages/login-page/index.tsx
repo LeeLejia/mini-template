@@ -5,7 +5,7 @@ import './index.scss'
 
 const newComponent = baseComponent<{}, {
   loadding: boolean
-}>()
+}>("index")
 
 let force: boolean = true
 let loginSuccess: boolean = false

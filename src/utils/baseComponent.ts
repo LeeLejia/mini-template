@@ -2,10 +2,10 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import fc from 'fsscloud'
 import api from '@api'
 import utils from '@utils/utils'
-import myConfig from '@config/index'
+import myConfig, { PagesKey } from '@config/index'
 
-function baseComponent<P = {}, S = {}>(key: keyof typeof myConfig.pages, bundle?: Config) {
-  return class extends Component<P, S> {
+function baseComponent<P = {}, S = {}>(key: PagesKey, bundle?: Config) {
+  abstract class newComponent extends Component<P, S> {
     $fc: typeof fc
     $api: typeof api
     $utils: typeof utils
@@ -22,7 +22,9 @@ function baseComponent<P = {}, S = {}>(key: keyof typeof myConfig.pages, bundle?
       this._componentWillMount = this.componentWillMount
       this.componentWillMount = this.componentWillMountHook
     }
-
+  
+    abstract componentLoadOption(data: any): void
+  
     // 设置 bar 样式
     setBarStyle(bg: string, style: string, title?: string) {
       Taro.setNavigationBarColor({
@@ -31,26 +33,24 @@ function baseComponent<P = {}, S = {}>(key: keyof typeof myConfig.pages, bundle?
       })
       title && Taro.setNavigationBarTitle({ title })
     }
-
-
+  
     componentWillMountHook() {
-      if(typeof key==='string') {
-        const data = this.$fc._getPageCache(key)
-        if(this._componentWillMount) {
-          this._componentWillMount(data)
-        }
-        return
+      // todo 解析query
+      const data = this.$fc._getPageCache(key)
+      if(data && this.componentLoadOption) {
+        this.componentLoadOption(data)
       }
       if(this._componentWillMount) {
         this._componentWillMount()
       }
+      return
     }
-
+  
     // 跳转到页面
-    navigateTo(pageName: keyof typeof myConfig.pages, option?: {[key: string]: any}) {
+    navigateTo(pageName: PagesKey, option?: {[key: string]: any}) {
       const page = myConfig.pages[pageName]
       if(page) {
-        if(option && typeof pageName === 'string') {
+        if(option) {
           this.$fc._setPageCache(pageName, option)
         }
         Taro.navigateTo({url: page.path})
@@ -58,7 +58,7 @@ function baseComponent<P = {}, S = {}>(key: keyof typeof myConfig.pages, bundle?
         console.error(`不存在页面：${pageName}`)
       }
     }
-
+  
     // 替换页面
     redirectTo(pageName: keyof typeof myConfig.pages) {
       const page = myConfig.pages[pageName]
@@ -68,7 +68,7 @@ function baseComponent<P = {}, S = {}>(key: keyof typeof myConfig.pages, bundle?
         console.error(`不存在页面：${pageName}`)
       }
     }
-
+  
     // 返回
     navigateBack(delta?: 'index' | 1 | 2 | 3 | 4 | 5) {
       const page = delta === 'index' ? 100 : delta
@@ -77,6 +77,7 @@ function baseComponent<P = {}, S = {}>(key: keyof typeof myConfig.pages, bundle?
       })
     }
   }
+  return newComponent
 }
 
 export default baseComponent

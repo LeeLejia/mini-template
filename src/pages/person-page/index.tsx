@@ -2,14 +2,14 @@ import Taro, {Config} from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import baseComponent from '@utils/baseComponent'
 import './index.scss'
+import { PagesKey } from '@config/index';
 
 const newComponent = baseComponent<{}, {
   person: {
     avatarUrl: string,
-    nickName: string,
-    curPlan: string
+    nickName: string
   }
-}>()
+}>("person")
 
 export default class extends newComponent{
 
@@ -23,23 +23,23 @@ export default class extends newComponent{
   componentWillMount() {
     // initData
     const user = this.$api.getUserInfo()
+    if(!user) {
+      return
+    }
     this.setState({
       person: {
         avatarUrl: user.avatarUrl,
         nickName: user.nickName,
-        curPlan: (user.solution && user.solution.name) || ''
       }
     })
   }
 
-  onClick(key: string) {
+  onClick(key: PagesKey) {
     this.navigateTo(key)
   }
 
   logout() {
     Taro.clearStorage()
-    this.$fc.state.remove('person', 'userInfo')
-    this.$fc.state.remove('person', 'hasLogin')
     Taro.navigateBack({delta: 100})
   }
 
@@ -54,7 +54,6 @@ export default class extends newComponent{
         <View className='settings'>
         { 
           [
-            {title: '当前户型', desc: person.curPlan, key: 'myHouse'},
             {title: '我的方案', desc: '', key: 'mySolution'},
             {title: '我的需求', desc: '', key: 'myDemand'},
           ].map(item => <View className='item' key={item.key} onClick={this.onClick.bind(this, item.key)}>
