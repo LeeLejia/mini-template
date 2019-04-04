@@ -1,5 +1,5 @@
 
-let isDebugger: boolean = false
+let isDebugger: boolean = IS_DEBUG
 
 function showLog(group: string, info: Array<{ content: any, style?: string }>) {
   console.group(group)

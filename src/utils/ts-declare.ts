@@ -13,3 +13,4 @@ namespace Taro{
 
 // declare constant 
 declare var APP_NAME: string
+declare var IS_DEBUG: boolean

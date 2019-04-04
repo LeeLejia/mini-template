@@ -8,7 +8,8 @@ const sassImporter = function(url) {
 const config = {
   projectName: '模版',
   defineConstants: {
-    APP_NAME: '模版'
+    APP_NAME: '模版',
+    IS_DEBUG: true
   },
   date: '2019-2-16',
   alias: {

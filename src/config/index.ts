@@ -14,7 +14,7 @@ interface ProjectConfig extends AppConfig{
 }
 
 const config: ProjectConfig = {
-  isDebugger: true,
+  isDebugger: IS_DEBUG,
   appName: APP_NAME,
   asMainAccount: true,
   loginByUnionId: false,
