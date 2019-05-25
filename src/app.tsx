@@ -31,7 +31,7 @@ class App extends Component {
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: '小程序',
+      navigationBarTitleText: APP_NAME,
       navigationBarTextStyle: 'black'
     }
   }

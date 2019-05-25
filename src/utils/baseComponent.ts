@@ -4,14 +4,16 @@ import api from '@api'
 import utils from '@utils/utils'
 import myConfig, { PagesKey } from '@config/index'
 
-function baseComponent<P = {}, S = {}>(key: PagesKey, bundle?: Config) {
-  abstract class newComponent extends Component<P, S> {
+function baseComponent<P = {}, S = {}>(key?: PagesKey, bundle?: Config) {
+  class newComponent extends Component<P, S> {
+    $name: string
     $fc: typeof fc
     $api: typeof api
     $utils: typeof utils
     $config: typeof myConfig
     $bundle: Config
     private _componentWillMount
+
     constructor() {
       super(...arguments)
       this.$bundle = Object.assign({}, key && myConfig.pages[key].bundle, bundle)
@@ -19,24 +21,18 @@ function baseComponent<P = {}, S = {}>(key: PagesKey, bundle?: Config) {
       this.$utils = utils
       this.$api = api
       this.$config = myConfig
-      this._componentWillMount = this.componentWillMount
-      this.componentWillMount = this.componentWillMountHook
+      if(key) {
+        this.$name = key
+        this._componentWillMount = this.componentWillMount
+        this.componentWillMount = this.componentWillMountHook
+      }
     }
   
-    abstract componentLoadOption(data: any): void
-  
-    // 设置 bar 样式
-    setBarStyle(bg: string, style: string, title?: string) {
-      Taro.setNavigationBarColor({
-        frontColor: style,
-        backgroundColor: bg
-      })
-      title && Taro.setNavigationBarTitle({ title })
-    }
+    componentLoadOption(data: any) {}
   
     componentWillMountHook() {
       // todo 解析query
-      const data = this.$fc._getPageCache(key)
+      const data = this.$fc._getPageCache(this.$name || '')
       if(data && this.componentLoadOption) {
         this.componentLoadOption(data)
       }
@@ -74,6 +70,14 @@ function baseComponent<P = {}, S = {}>(key: PagesKey, bundle?: Config) {
       const page = delta === 'index' ? 100 : delta
       Taro.navigateBack({
         delta: page || 1
+      })
+    }
+
+    // 显示 toast
+    showToast(title: string, icon?:string) {
+      Taro.showToast({
+        title,
+        icon: icon?icon:'none'
       })
     }
   }
