@@ -35,12 +35,12 @@ const config: ProjectConfig = {
   asMainAccount: true,
   loginByUnionId: false,
   leancloud: {
-    appId: 'Oc72IpiQ9BPnocwOCQSjj10Y-gzGzoHsz',
-    appKey: 'lTzR0fHpeb5sRtpKgKpcXYbG',
+    appId: '',
+    appKey: '',
     production: false
   },
   testAb: {
-    appKey: 'TESTIN_wadc901fa-c75f-457a-ad20-b8e0f2ac8883'
+    appKey: ''
   },
   relationMiniProgram: {},
   pages: pageConfig
