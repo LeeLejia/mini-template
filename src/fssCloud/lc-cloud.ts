@@ -1,4 +1,4 @@
-import leanCloud from './leancloud-storage-min'
+import leanCloud from './leancloud-storage-min/storage'
 import { AccessControl } from './interface'
 
 // 获取权限控制

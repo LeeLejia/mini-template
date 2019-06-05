@@ -2,7 +2,7 @@
 	"miniprogramRoot": "dist/",
 	"projectname": "fss-ts",
 	"description": "fss-ts",
-	"appid": "wxec454efe5620559c",
+	"appid": "wx8d59483bf921126e",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,
@@ -12,5 +12,7 @@
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"cloudfunctionRoot": "wx-server/",
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"condition": {}
 }

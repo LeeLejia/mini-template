@@ -1,31 +1,6 @@
 import fc from 'fsscloud'
 import Taro from '@tarojs/taro'
-import appConfig from '@config/index'
 import request from './request'
-
-// 检查用户登陆状态
-function checkLoginStatus(nav: boolean = true, force: boolean = true): boolean {
-  const hasLogin = fc.state.get('Person', 'hasLogin', false)
-  if (!hasLogin && nav) {
-    const url = `${appConfig.pages.login.path}?force=${force}`
-    Taro.navigateTo({ url })
-  }
-  return !!hasLogin
-}
-
-// 设置用户状态
-type SetUserStateResult = { hasLogin: boolean, userInfo?: any }
-async function setUserState(): Promise<SetUserStateResult> {
-  return fc.getCurrentUser().then(res => {
-    fc.state.set('Person', 'hasLogin', true)
-    fc.state.set('Person', 'userInfo', res.attributes)
-    return { hasLogin: true, userInfo: res.attributes }
-  }).catch(err => {
-    fc.state.set('Person', 'hasLogin', false)
-    console.log('error::', err)
-    return { hasLogin: false }
-  })
-}
 
 // 获取机型
 const sysInfo = Taro.getSystemInfo()
@@ -68,8 +43,6 @@ function checkForUpdate() {
 
 
 export default {
-  setUserState,
-  checkLoginStatus,
   getUserInfo,
   isSpecialModel,
   checkForUpdate,

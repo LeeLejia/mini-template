@@ -5,7 +5,7 @@ import './index.scss'
 
 const newComponent = baseComponent<{}, {
   loadding: boolean
-}>("index")
+}>('index')
 
 let force: boolean = true
 let loginSuccess: boolean = false
@@ -19,7 +19,7 @@ export default class extends newComponent {
   config: Config = {
     navigationBarBackgroundColor: '#ffffff',
     navigationBarTextStyle: 'black',
-    navigationBarTitleText: '粉刷刷',
+    navigationBarTitleText: APP_NAME,
     disableScroll: true
   }
 
@@ -40,7 +40,7 @@ export default class extends newComponent {
     }
     if (detail.errMsg === 'getUserInfo:ok') {
       this.setState({ loadding: true })
-      this.$api.setUserState().then(res => {
+      this.$fc.setUserState().then(res => {
         this.setState({ loadding: false })
         if (res.hasLogin) {
           Taro.showToast({

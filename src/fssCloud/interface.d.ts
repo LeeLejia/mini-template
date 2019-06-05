@@ -35,7 +35,8 @@ interface TestinABConfig {
 
 /* 初始化参数 */
 interface InitOption extends AppConfig, LeanCloudConfig { 
-  testAb?: TestinABConfig
+  testAb?: TestinABConfig,
+  wxcloud?: Taro.cloud.ICloudConfig
 }
 
 /* 权限控制参数 */

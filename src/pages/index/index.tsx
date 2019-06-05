@@ -1,7 +1,8 @@
 import Taro, { Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 import baseComponent from '@utils/baseComponent'
 import './index.scss'
+import { string } from '_@types_prop-types@15.7.1@@types/prop-types';
 
 const newComponent = baseComponent<{}, {
 }>('index')
@@ -24,16 +25,17 @@ export default class extends newComponent {
   }
 
   onPay() {
-    var paramsJson = {
-      productDescription: 'test mini',
-      amount: 1,
-    }
-    this.$fc.Cloud.run('wxOrder', paramsJson).then(data=>{
-      console.log('预请求订单成功')
-      Taro.requestPayment(data).then(res=>{
-        console.log('支付完成')
-        console.log('pay result:', res)
-      })
+    this.$fc.onPay({
+      id: '100001',
+      count: 3
+    }).then(res => {
+      console.log('支付结果：', res)
+    })
+  }
+
+  onPhone({detail}) {
+    this.$fc.getPhoneNumber(detail).then(res=>{
+      console.log('phone:', res)
     })
   }
 
@@ -42,6 +44,7 @@ export default class extends newComponent {
     return (
       <View className='index-container'>
         <View className='bt' onClick={this.onPay.bind(this)}>支付</View>
+        <Button openType='getPhoneNumber' onGetPhoneNumber={this.onPhone.bind(this)}>获取手机号码</Button>
       </View>
     )
   }

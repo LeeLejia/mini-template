@@ -2,12 +2,16 @@ import {AppConfig, LeanCloudConfig, TestinABConfig  } from '../fssCloud/interfac
 
 interface PageConfig {
   path: string,
-  bundle: {[key: string]: any}
+  bundle: {
+    onShare: boolean,
+    [key: string]: any
+  }
 }
 
 interface ProjectConfig extends AppConfig{
   leancloud: LeanCloudConfig,
-  testAb?: TestinABConfig
+  testAb?: TestinABConfig,
+  wxCloud?: Taro.cloud.ICloudConfig,
   pages: {
     [key: string]: PageConfig
   }
@@ -17,6 +21,12 @@ interface ProjectConfig extends AppConfig{
 const pageConfig = {
   index: {
     path: '/pages/index/index',
+    bundle: {
+      onShare: true
+    }
+  },
+  webview: {
+    path: '/pages/webview/index',
     bundle: {}
   },
   person: {
@@ -41,6 +51,10 @@ const config: ProjectConfig = {
   },
   testAb: {
     appKey: ''
+  },
+  wxCloud: {
+    traceUser: true,
+    env: 'youhuo-hx9ul'
   },
   relationMiniProgram: {},
   pages: pageConfig

@@ -76,8 +76,3 @@
     content: '›';
   }
 }
-
-.cover{
-  @include cover;
-  z-index: -1;
-}

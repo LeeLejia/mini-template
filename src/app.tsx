@@ -25,6 +25,7 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
+      'pages/webview/index',
       'pages/login-page/index',
       'pages/person-page/index',
     ],
@@ -38,8 +39,11 @@ class App extends Component {
 
   componentWillMount() {
     fc.init({...appConfig.leancloud, ...appConfig})
-    api.setUserState()
     api.checkForUpdate()
+    fc.setUserState()
+    setTimeout(() => {
+      fc.checkLoginStatus(appConfig.pages.login.path)
+    }, 1000)
   }
   
   componentDidShow() {
