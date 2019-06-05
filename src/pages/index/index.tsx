@@ -2,7 +2,6 @@ import Taro, { Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import baseComponent from '@utils/baseComponent'
 import './index.scss'
-import { string } from '_@types_prop-types@15.7.1@@types/prop-types';
 
 const newComponent = baseComponent<{}, {
 }>('index')
