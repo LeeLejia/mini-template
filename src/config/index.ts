@@ -3,7 +3,7 @@ import {AppConfig, LeanCloudConfig, TestinABConfig  } from '../fssCloud/interfac
 interface PageConfig {
   path: string,
   bundle: {
-    onShare: boolean,
+    onShare?: boolean,
     [key: string]: any
   }
 }
@@ -14,7 +14,8 @@ interface ProjectConfig extends AppConfig{
   wxCloud?: Taro.cloud.ICloudConfig,
   pages: {
     [key: string]: PageConfig
-  }
+  },
+  appConfig: Promise<{[key: string]: any}>
 }
 
 // 页面配置
@@ -57,7 +58,8 @@ const config: ProjectConfig = {
     env: 'youhuo-hx9ul'
   },
   relationMiniProgram: {},
-  pages: pageConfig
+  pages: pageConfig,
+  appConfig: Promise.resolve({})
 }
 
 export type PagesKey = keyof typeof pageConfig

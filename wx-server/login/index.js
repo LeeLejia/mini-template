@@ -27,7 +27,7 @@ exports.main = async (event, context) => {
   const url_get_token = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${secret}&js_code=${event.code}&grant_type=authorization_code`
   let { openid, session_key } = await request({ method: 'GET', uri: url_get_token, json: true })
   // 设置session
-  db.collection('_session').doc(openid || OPENID).set({
+  db.collection('_session').doc(openid || OPENID).update({
     data: { session_key }
   })
   // 获取用户信息

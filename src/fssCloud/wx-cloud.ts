@@ -132,6 +132,14 @@ async function sendMsg(option: {
   }).then(console.log)
 }
 
+// 读取全局配置信息
+async function readConfig(): Promise<{[key: string]: any}> {
+  
+  return Taro.cloud.callFunction({
+    name: 'readConfig',
+    data: {}
+  }).then(res=>res.result && res.result['data'])
+}
 
 export default {
   init,
@@ -139,5 +147,6 @@ export default {
   getPhoneNumber,
   updateUserInfo,
   onPay,
+  readConfig,
   sendMsg
 }

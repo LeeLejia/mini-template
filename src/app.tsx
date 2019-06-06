@@ -41,6 +41,8 @@ class App extends Component {
     fc.init({...appConfig.leancloud, ...appConfig})
     api.checkForUpdate()
     fc.setUserState()
+    // 加载在线配置
+    appConfig.appConfig = fc.readConfig()
     setTimeout(() => {
       fc.checkLoginStatus(appConfig.pages.login.path)
     }, 1000)
